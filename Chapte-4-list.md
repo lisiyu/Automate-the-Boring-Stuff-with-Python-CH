@@ -311,3 +311,111 @@ Using range(len(supplies)) in the previously shown for loop is handy because the
 
 ## The in and not in Operators 
 ## in和not in操作符
+
+
+You can determine whether a value is or isn’t in a list with the in and not in operators. Like other operators, in and not in are used in expressions and connect two values: a value to look for in a list and the list where it may be found. These expressions will evaluate to a Boolean value. Enter the following into the interactive shell:  
+你可以用in 或not in运算符判断一个值是否存在一个列表中.和其他操作运算符一样,in和not in运算符用在表达式中连接两个值:一个在列表中寻的值和可能被找到这个值的列表.这个运算符的结果是一个布尔值.在交互窗体中输入以下代码:  
+
+	>>> 'howdy' in ['hello', 'hi', 'howdy', 'heyas']
+	True
+	>>> spam = ['hello', 'hi', 'howdy', 'heyas']
+	>>> 'cat' in spam
+	False
+	>>> 'howdy' not in spam
+	False
+	>>> 'cat' not in spam
+	True
+
+For example, the following program lets the user type in a pet name and then checks to see whether the name is in a list of pets. Open a new file editor window, enter the following code, and save it as myPets.py:  
+例如，下面的程序可以让用户输入一个宠物的名字，然后再检查看名字是否在宠物列表中。打开一个新的文件编辑器窗口，输入以下代码，并保存为myPets.py：  
+
+	myPets = ['Zophie', 'Pooka', 'Fat-tail']
+	print('Enter a pet name:')
+	name = input()
+	if name not in myPets:
+		print('I do not have a pet named ' + name)
+	else:
+		print(name + ' is my pet.')
+	The output may look something like this:
+
+	Enter a pet name:
+	Footfoot
+	I do not have a pet named Footfoot  
+	
+##The Multiple Assignment Trick  
+##多重赋值技巧 
+The multiple assignment trick is a shortcut that lets you assign multiple variables with the values in a list in one line of code. So instead of doing this:  
+多重赋值技巧是一个快捷方式，可以让你在一行代码中通过列表给多个变量同时赋值,以代替这样的繁琐赋值方式:
+
+	>>> cat = ['fat', 'orange', 'loud']
+	>>> size = cat[0]
+	>>> color = cat[1]
+	>>> disposition = cat[2]
+	
+you could type this line of code:  你可以在一行内这样写  
+	
+	>>> cat = ['fat', 'orange', 'loud']
+	>>> size, color, disposition = cat
+	
+The number of variables and the length of the list must be exactly equal, or Python will give you a ValueError:  
+变量的数目和列表的长度必须完全相等，否则Python会给你一个ValueError错误：  
+
+	>>> cat = ['fat', 'orange', 'loud']
+	>>> size, color, disposition, name = cat
+	Traceback (most recent call last):
+	  File "<pyshell#84>", line 1, in <module>
+		size, color, disposition, name = cat
+	ValueError: need more than 3 values to unpack
+	
+The multiple assignment trick can also be used to swap the values in two variables:  
+多重赋值技巧也可以用于交换两个变量的值：  
+
+	>>> a, b = 'Alice', 'Bob'
+	>>> a, b = b, a
+	>>> print(a)
+	'Bob'
+	>>> print(b)
+	'Alice'
+	
+##Augmented Assignment Operators
+##增强赋值运算符
+
+When assigning a value to a variable, you will frequently use the variable itself. For example, after assigning 42 to the variable spam, you would increase the value in spam by 1 with the following code:  
+当值分配给一个变​​量，你会经常使用的变量本身。例如，分配42给变量spam后，可以通过下面的代码增加spam值：  
+
+	>>> spam = 42
+	>>> spam = spam + 1
+	>>> spam
+	43
+	
+As a shortcut, you can use the augmented assignment operator += to do the same thing:  
+作为一种快捷方式，可以使用增强赋值运算符+ =做同样的事情： 
+ 
+	>>> spam = 42
+	>>> spam += 1
+	>>> spam
+	43
+
+###Table 4-1. The Augmented Assignment Operators	
+|Augmented assignment statement|Equivalent assignment statement|
+|spam += 1|spam = spam + 1|
+|spam -= 1|spam = spam - 1|
+|spam *= 1|spam = spam * 1|
+|spam /= 1|spam = spam / 1|
+|spam %= 1|spam = spam % 1|
+
+The += operator can also do string and list concatenation, and the *= operator can do string and list replication. Enter the following into the interactive shell:  
++ =运算符也可以做字符串连接列表，而* =运算符可以做字符串和列表复制。输入以下内容交互的shell：
+
+	>>> spam = 'Hello'
+	>>> spam += ' world!'
+	>>> spam
+	'Hello world!'
+
+	>>> bacon = ['Zophie']
+	>>> bacon *= 3
+	>>> bacon
+	['Zophie', 'Zophie', 'Zophie']
+	Methods  
+	
+##Methods 方法
