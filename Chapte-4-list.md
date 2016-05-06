@@ -397,16 +397,17 @@ As a shortcut, you can use the augmented assignment operator += to do the same t
 	43
 
 ###Table 4-1. The Augmented Assignment Operators	
-|Augmented assignment statement|Equivalent assignment statement|
-|spam += 1|spam = spam + 1|
-|spam -= 1|spam = spam - 1|
-|spam *= 1|spam = spam * 1|
-|spam /= 1|spam = spam / 1|
-|spam %= 1|spam = spam % 1|
+
+|Augmented assignment statement |Equivalent assignment statement |  
+|spam += 1 |spam = spam + 1 |  
+|spam -= 1 |spam = spam - 1 |  
+|spam *= 1 |spam = spam * 1 |  
+|spam /= 1 |spam = spam / 1 |  
+|spam %= 1 |spam = spam % 1 |  
 
 The += operator can also do string and list concatenation, and the *= operator can do string and list replication. Enter the following into the interactive shell:  
-+ =运算符也可以做字符串连接列表，而* =运算符可以做字符串和列表复制。输入以下内容交互的shell：
-
+	+=运算符也可以做字符串连接列表，而* =运算符可以做字符串和列表复制。输入以下内容交互的shell：
+	
 	>>> spam = 'Hello'
 	>>> spam += ' world!'
 	>>> spam
@@ -416,6 +417,6 @@ The += operator can also do string and list concatenation, and the *= operator c
 	>>> bacon *= 3
 	>>> bacon
 	['Zophie', 'Zophie', 'Zophie']
-	Methods  
-	
+
+
 ##Methods 方法
