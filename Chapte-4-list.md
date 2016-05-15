@@ -789,5 +789,163 @@ But lists don’t work this way. When you assign a list to a variable, you are a
 This might look odd to you. The code changed only the cheese list, but it seems that both the cheese and spam lists have changed.  
 这看起来可能会迷惑你。该代码只更改了cheese，但似乎无论是cheese还是spam列表都已经改变。  
 When you create the list ➊, you assign a reference to it in the spam variable. But the next line ➋ copies only the list reference in spam to cheese, not the list value itself. This means the values stored in spam and cheese now both refer to the same list. There is only one underlying list because the list itself was never actually copied. So when you modify the first element of cheese ➌, you are modifying the same list that spam refers to.  
-当你创建列表时,你定义了一个指向变量spam的引用,下一行仅仅是复制了spam的引用到cheese,并不是列表值本身.这就意味着存储在spam和cheese的值都指向了同一个列表.这里最底层仅有一个列表因为列表不能复制列表自己.所以当你改变cheese的元素是也改变了spam指向的同一个列表.  
+当你创建列表时,你定义了一个指向变量spam的引用,下一行仅仅是复制了spam的引用到cheese,并不是列表值本身.这就意味着存储在spam和cheese的值都指向了同一个列表.这里最底层仅有一个列表因为列表不能复制列表自己.所以当你改变cheese的元素时也改变了spam指向的同一个列表.  
+
+Remember that variables are like boxes that contain values. The previous figures in this chapter show that lists in boxes aren’t exactly accurate because list variables don’t actually contain lists—they contain references to lists. (These references will have ID numbers that Python uses internally, but you can ignore them.) Using boxes as a metaphor for variables, Figure 4-4 shows what happens when a list is assigned to the spam variable.  
+记住变量就像一个存储了值的盒子.在这一章前面指出列表在盒子中并不完全正确,因为列表变量实际上并不包含你列表,他们只是包含了列表的引用.这些引用会产生ID号在python内部使用.你可以忽略他们.使用盒作为变量的一个比喻，图4-4显示了一个列表被分配到spam变量会发生什么。  
+[图4-4](https://automatetheboringstuff.com/images/000081.jpg)
+
+Then, in Figure 4-5, the reference in spam is copied to cheese. Only a new reference was created and stored in cheese, not a new list. Note how both references refer to the same list.  
+在图4-5，在spam中的引用复制到cheese。仅一个新的引用被创建并存储在cheese中，而不是一个新的列表。注意两个引用如何引用相同的列表。  
+[图4-5](https://automatetheboringstuff.com/images/000082.jpg)
+
+When you alter the list that cheese refers to, the list that spam refers to is also changed, because both cheese and spam refer to the same list. You can see this in Figure 4-6.  
+当你改变cheese指向的列表，spam是指向的列表也被改变，因为这两个变量cheese和spam指相同列表。您可以在图4-6看到这一点。
+[图4-6](https://automatetheboringstuff.com/images/000071.jpg)
+
+Variables will contain references to list values rather than list values themselves. But for strings and integer values, variables simply contain the string or integer value. Python uses references whenever variables must store values of mutable data types, such as lists or dictionaries. For values of immutable data types such as strings, integers, or tuples, Python variables will store the value itself.  
+变量包含引用列表值，而不是列表值本身。但是对于字符串和整数值，变量仅仅包含字符串或整数值。每当变量必须存储可变数据类型的值时，Python使用引用来存储可变数据类型的值,如列表或字典。对于字符串，整数或元组这样不可改变的数据类型的值，Python的变量将存储值本身。 
+
+Although Python variables technically contain references to list or dictionary values, people often casually say that the variable contains the list or dictionary.  
+虽然Python中的变量在技术上采用引用来存储列表或字典中的值，但人们常常说的变量包含列表或字典。  
+
+##Passing References引用传递
+
+References are particularly important for understanding how arguments get passed to functions. When a function is called, the values of the arguments are copied to the parameter variables. For lists (and dictionaries, which I’ll describe in the next chapter), this means a copy of the reference is used for the parameter. To see the consequences of this, open a new file editor window, enter the following code, and save it as passingReference.py:  
+引用对理解参数是如何被传递给函数的尤为重要。当一个函数被调用，参数的值复制到参数变量。对于列表（字典，我将在下一章中描述）,这意味着引用的副本被用于参数。为了看到这样的意义，打开一个新的文件编辑器窗口，输入以下代码，并保存为passingReference.py：
+
+	def eggs(someParameter):
+		someParameter.append('Hello')
+
+	spam = [1, 2, 3]
+	eggs(spam)
+	print(spam)
+
+Notice that when eggs() is called, a return value is not used to assign a new value to spam. Instead, it modifies the list in place, directly. When run, this program produces the following output:  
+注意当函数eggs()被调用时,返回值不是分配一个新的值给spam.相反,直接在原处修改了其值.当运行这个程序输出结果如下:
+
+	[1, 2, 3, 'Hello']
+
+Even though spam and someParameter contain separate references, they both refer to the same list. This is why the append('Hello') method call inside the function affects the list even after the function call has returned.  
+尽管spam和someParameter包含单独的引用，但它们都指向相同的列表。这就是为什么append('Hello')方法在函数中调用返回会影响到列表中的值。  
+Keep this behavior in mind: Forgetting that Python handles list and dictionary variables this way can lead to confusing bugs.  
+在脑海中牢记这种行为记：忘记了Python处理列表和字典变量这种方式可能会导致奇怪的错误。  
+
+##The copy Module’s copy() and deepcopy() Functions
+##浅表复制和深度复制  
+
+Although passing around references is often the handiest way to deal with lists and dictionaries, if the function modifies the list or dictionary that is passed, you may not want these changes in the original list or dictionary value. For this, Python provides a module named copy that provides both the copy() and deepcopy() functions. The first of these, copy.copy(), can be used to make a duplicate copy of a mutable value like a list or dictionary, not just a copy of a reference. Enter the following into the interactive shell:  
+虽然引用传递往往是处理列表和字典最方便的方式，如果函数修改传递的列表或字典时,你不希望在原来的列表或字典值引起这些变化要怎么办。为此，Python提供了一个名为copy()的模块,同时提供浅表复制copy()和深度复制deepcopy()函数。首先,copy.copy（），可以用来制作一个可变值的列表或字典副本，而不仅仅是一个引用的副本。输入以下内容到交互窗体：
+
+	>>> import copy
+	>>> spam = ['A', 'B', 'C', 'D']
+	>>> cheese = copy.copy(spam)
+	>>> cheese[1] = 42
+	>>> spam
+	['A', 'B', 'C', 'D']
+	>>> cheese
+	['A', 42, 'C', 'D']
+
+Now the spam and cheese variables refer to separate lists, which is why only the list in cheese is modified when you assign 42 at index 1. As you can see in Figure 4-7, the reference ID numbers are no longer the same for both variables because the variables refer to independent lists.    
+现在，spam和cheese变量是单独的列表，这就是为什么当你对索引1分配值42时只有cheese列表被修改。正如你在图4-7中看到的，两个变量的引用ID号不再是相同的，因为变量是指独立的列表。  
+[图 4-7](https://automatetheboringstuff.com/images/000084.jpg)
+ 
+ If the list you need to copy contains lists, then use the copy.deepcopy() function instead of copy.copy(). The deepcopy() function will copy these inner lists as well.  
+如果您需要复制的列表包含列表，请使用copy.deepcopy()函数，而不是copy.copy()。deepcopy()函数将复制这些内在的列表。  
+
+##Summary总结
+
+Lists are useful data types since they allow you to write code that works on a modifiable number of values in a single variable. Later in this book, you will see programs using lists to do things that would be difficult or impossible to do without them.   
+列表是一种非常有用的数据类型,它可以让你的代码实现在一个单一变量中修改值的数量.在本书的后面你会看到一些使用列表的程序,如果不使用列表这些程序是非常困难甚至于是无法完成的. 
+
+Lists are mutable, meaning that their contents can change. Tuples and strings, although list-like in some respects, are immutable and cannot be changed. A variable that contains a tuple or string value can be overwritten with a new tuple or string value, but this is not the same thing as modifying the existing value in place—like, say, the append() or remove() methods do on lists.  
+列表是可变的，这意味着它们的内容可以改变。元组和字符串，虽然在某些方面与列表类似，但是他们是不可变的，并且不能被改变。包含元组或字符串值的变量可以用一个新的元组或字符串值覆盖，但这和使用append()或remove() 方法在原处修改列表的值是不一样的.  
+
+Variables do not store list values directly; they store references to lists. This is an important distinction when copying variables or passing lists as arguments in function calls. Because the value that is being copied is the list reference, be aware that any changes you make to the list might impact another variable in your program. You can use copy() or deepcopy() if you want to make changes to a list in one variable without modifying the original list.  
+变量不直接存储列表中的值;它们存储列表的引用.复制变量或传递列表作为函数调用的参数时这是非常重要的区别.因为复制的值是列表的引用，请注意，您对列表中的任何值的修改可能影响到程序中另一个变量.如果你仅想改变一个变量列表而不需要修改原来的列表可以使用copy()或deepcopy().
+
+###Practice Questions 练习题
+
+
+Q:1. What is []? 
+
+Q:2. How would you assign the value 'hello' as the third value in a list stored in a variable named spam? (Assume spam contains [2, 4, 6, 8, 10].)
+For the following three questions, let’s say spam contains the list ['a', 'b', 'c', 'd'].   
+
+Q:3. What does spam[int(int('3' * 2) // 11)] evaluate to?  
+
+Q:4. What does spam[-1] evaluate to?
+
+Q:5. What does spam[:2] evaluate to?
+For the following three questions, let’s say bacon contains the list [3.14, 'cat', 11, 'cat', True].
+
+Q:6. What does bacon.index('cat') evaluate to?
+
+Q:7. What does bacon.append(99) make the list value in bacon look like?
+
+Q:8. What does bacon.remove('cat') make the list value in bacon look like?
+
+Q:9. What are the operators for list concatenation and list replication?
+
+Q:10. What is the difference between the append() and insert() list methods?
+
+Q:11. What are two ways to remove values from a list?
+
+Q:12. Name a few ways that list values are similar to string values.
+
+Q:13. What is the difference between lists and tuples?
+
+Q:14. How do you type the tuple value that has just the integer value 42 in it?
+
+Q:15. How can you get the tuple form of a list value? How can you get the list form of a tuple value?
+
+Q:16. Variables that “contain” list values don’t actually contain lists directly. What do they contain instead?
+
+Q:17. What is the difference between copy.copy() and copy.deepcopy()?
+
+##Practice Projects 练习项目
+
+For practice, write programs to do the following tasks.  
+练习,编写程序来执行以下任务。  
+
+###Comma Code 逗号码
+
+Say you have a list value like this: spam = ['apples', 'bananas', 'tofu', 'cats']  
+假设你有一个这样的列表spam = ['apples', 'bananas', 'tofu', 'cats']   
+ 
+Write a function that takes a list value as an argument and returns a string with all the items separated by a comma and a space, with and inserted before the last item. For example, passing the previous spam list to the function would return 'apples, bananas, tofu, and cats'. But your function should be able to work with any list value passed to it.   
+编写一个函数，接受一个列表值作为参数并返回全部由逗号分隔的字符串并在最后
+一个元素之前插入and.例如前面的列表spam会返回'apples, bananas, tofu, and cats'但是你的函数需要对任何列表都适用.  
+
+###Character Picture Grid 字符图片
+
+Say you have a list of lists where each value in the inner lists is a one-character string, like this:  
+假设有一个列表，其内部有多个列表,每行都是一个由字符组成的列表，就像这样： 
+
+	grid = [['.', '.', '.', '.', '.', '.'],
+			['.', 'O', 'O', '.', '.', '.'],
+			['O', 'O', 'O', 'O', '.', '.'],
+			['O', 'O', 'O', 'O', 'O', '.'],
+			['.', 'O', 'O', 'O', 'O', 'O'],
+			['O', 'O', 'O', 'O', 'O', '.'],
+			['O', 'O', 'O', 'O', '.', '.'],
+			['.', 'O', 'O', '.', '.', '.'],
+			['.', '.', '.', '.', '.', '.']]
+			
+You can think of grid[x][y] as being the character at the x- and y-coordinates of a “picture” drawn with text characters. The (0, 0) origin will be in the upper-left corner, the x-coordinates increase going right, and the y-coordinates increase going down.
+Copy the previous grid value, and write code that uses it to print the image.  
+你可以把这个想象成X和Y组成的坐标网格.利用x行和y列的字符来绘制图片.把左上角当成坐标原点(0,0),x坐标往右增长,y往下增长.复制网格的值,并写出代码打印出下面的图片.  
+
+	..OO.OO..
+	.OOOOOOO.
+	.OOOOOOO.
+	..OOOOO..
+	...OOO...
+	....O....
+	
+Hint: You will need to use a loop in a loop in order to print grid[0][0], then grid[1][0], then grid[2][0], and so on, up to grid[8][0]. This will finish the first row, so then print a newline. Then your program should print grid[0][1], then grid[1][1], then grid[2][1], and so on. The last thing your program will print is grid[8][5].    
+小提示:你需要用循环内循环来实现打印如下值.grid[0][0],接着grid[1][0],接着grid[2][0]直到grid[8][0].这样可以完成第一行,接下来打印下一行.你的程序应该先打印grid[0][1],接着grid[1][1],接着grid[2][1],最后打印grid[8][5].
+
+Also, remember to pass the end keyword argument to print() if you don’t want a newline printed automatically after each print() call.  
+此外，如果你不希望每次打印后自动打印一个换行符请记住传递结束关键字参数给print()。
 
