@@ -219,7 +219,7 @@ The first time setdefault() is called, the dictionary in spam changes to {'color
 第一次调用setdefault()是字典spam变成{'color': 'black', 'age': 5, 'name': 'Pooka'}.因为现在值通过键'color'进行了设置方法调用返回值'black'.当第二次调用spam.setdefault('color', 'white')时,键对应的值并没有变成'white',因为spam已经有键'color'存在.
 
 The setdefault() method is a nice shortcut to ensure that a key exists. Here is a short program that counts the number of occurrences of each letter in a string. Open the file editor window and enter the following code, saving it as characterCount.py:  
-setdefault（）方法是一个很好的确保关键存在的快捷方式。这里有一个很短的程序用来计算字符串中的每个字母出现的次数。打开文件编辑器窗口，并输入以下代码，将其保存为characterCount.py：
+setdefault（）方法是一个很好的确保键存在的快捷方式。这里有一个很短的程序用来计算字符串中的每个字母出现的次数。打开文件编辑器窗口，并输入以下代码，将其保存为characterCount.py：
 
 	message = 'It was a bright cold day in April, and the clocks were striking thirteen.'
 	count = {}
@@ -292,3 +292,229 @@ If you want to obtain the prettified text as a string value instead of displayin
 #Using Data Structures to Model Real-World Things
 #用数据结构模型现实世界的事物
 [相关教学视频](https://youtu.be/mf28IhDfMGk)
+
+在因特网出现之前,地球上相隔十万八千里的人也可以玩棋类游戏.每个玩家在家建立一个棋盘，然后通过轮流邮寄明信片给对方来描述下一步怎么走.为了实现这个,玩家们需要先约定一种描述走棋方法的规则.国际象棋中,棋盘上的空间是由数字和字母组成的坐标.如图5所示:
+[图五](https://automatetheboringstuff.com/images/000002.jpg)
+
+The chess pieces are identified by letters: K for king, Q for queen, R for rook, B for bishop, and N for knight.Describing a move uses the letter of the piece and the coordinates of its destination. A pair of these moves describes what happens in a single turn (with white going first); for instance, the notation 2. Nf3 Nc6 indicates that white moved a knight to f3 and black moved a knight to c6 on the second turn of the game.    
+棋子是用字母标识：K为王，Q为皇后，R为车，B的主教，和N为骑士。描述每一步采用的棋子的标识和其目的地格子的坐标.两方各走一步描述一回合内发生的动作(执白先走).例如，符号2.NF3 NC6表示:在比赛的第二轮白方移动骑士到F3和黑方移动骑士到C6.   
+
+There’s a bit more to algebraic notation than this, but the point is that you can use it to unambiguously describe a game of chess without needing to be in front of a chessboard. Your opponent can even be on the other side of the world! In fact, you don’t even need a physical chess set if you have a good memory: You can just read the mailed chess moves and update boards you have in your imagination.  
+虽然用代数符号来表示有一点繁琐,但是你可以用它来清楚的对战一盘棋，而无需在棋盘前当面对局。你的对手甚至可以是世界另一边的人！如果你的记忆力足够好你连一个真实的棋盘都不需要:你只需要阅读描述棋子移动的卡片通过想象来更新棋谱和给出你的对应招式.  
+
+Computers have good memories. A program on a modern computer can easily store billions of strings like '2. Nf3 Nc6'. This is how computers can play chess without having a physical chessboard. They model data to represent a chessboard, and you can write code to work with this model.  
+计算机有超强的记忆。现代计算机上的程序可以轻松存储数十亿像'2.NF3 NC6'这样的字符串.这就是为啥电脑可以不使用物理棋盘来完成对局.用数据模型表示一个棋盘,你可以通过编写代码来实现这个模型.  
+
+This is where lists and dictionaries can come in. You can use them to model real-world things, like chessboards. For the first example, you’ll use a game that’s a little simpler than chess: tic-tac-toe.  
+引入列表和字典，你可以用它们来现实世界东西的模型，如棋盘。对于第一个示例，您将使用比国际象棋简单一些的游戏：井字棋  
+
+##A Tic-Tac-Toe Board 井字棋棋盘
+A tic-tac-toe board looks like a large hash symbol (#) with nine slots that can each contain an X, an O, or a blank. To represent the board with a dictionary, you can assign each slot a string-value key, as shown in Figure 5-2.  
+一个井字棋盘看起来像一个大的符号（＃）与9个空格，每个都包含X，O或是空白。为了用字典表示井字棋盘，您可以给每个格子定义字符串值，如图5-2所示。
+[图5-2](https://automatetheboringstuff.com/images/000003.png)
+
+This dictionary is a data structure that represents a tic-tac-toe board. Store this board-as-a-dictionary in a variable named theBoard. Open a new file editor window, and enter the following source code, saving it as ticTacToe.py:   
+这个词典是一个数据结构，它表示一个井字棋盘。存储此字典在名为theBoard的变量中。打开一个新的文件编辑器窗口，然后输入以下代码，将其保存为ticTacToe.py：
+
+	theBoard = {'top-L': ' ', 'top-M': ' ', 'top-R': ' ',
+				'mid-L': ' ', 'mid-M': ' ', 'mid-R': ' ',
+				'low-L': ' ', 'low-M': ' ', 'low-R': ' '}
+				
+The data structure stored in the theBoard variable represents the tic-tactoe  
+存储在变量theBoard中的数据结构代表了井字棋盘如图5-3所示:
+
+[图5-3](https://automatetheboringstuff.com/images/000006.png)
+
+Since the value for every key in theBoard is a single-space string, this dictionary represents a completely clear board. If player X went first and chose the middle space, you could represent that board with this dictionary:  
+由于在theBoard每个键的值都是一个空字符串.这个字典就代表了空白的棋盘。如果其中一个玩家x第一步选择了中间的位置,你需要用下面的字典来代表:
+
+	theBoard = {'top-L': ' ', 'top-M': ' ', 'top-R': ' ',
+				'mid-L': ' ', 'mid-M': 'X', 'mid-R': ' ',
+				'low-L': ' ', 'low-M': ' ', 'low-R': ' '}
+				
+The data structure in theBoard now represents the tic-tac-toe board  
+在theBoard的数据结构现在代表图5-4所示的井字棋盘.
+[图5-4](https://automatetheboringstuff.com/images/000008.png)
+
+A board where player O has won by placing Os across the top might look like this:  
+如果玩家o通过在顶部多个0连成一行获胜看起来会是这样的:
+
+	theBoard = {'top-L': 'O', 'top-M': 'O', 'top-R': 'O',
+				'mid-L': 'X', 'mid-M': 'X', 'mid-R': ' ',
+				'low-L': ' ', 'low-M': ' ', 'low-R': 'X'}
+				
+The data structure in theBoard now represents the tic-tac-toe board  
+在theBoard的数据结构现在代表图5-5所示的井字棋盘.
+[图5-5](https://automatetheboringstuff.com/images/000010.png)
+
+Of course, the player sees only what is printed to the screen, not the contents of variables. Let’s create a function to print the board dictionary onto the screen. Make the following addition to ticTacToe.py (new code is in bold):  
+当然，玩家只看到被打印到屏幕上的内容，并不是变量内容。让我们创建一个函数来打印棋盘字典到屏幕上。在ticTacToe.py中添加以下内容（新代码以粗体显示）：
+
+	def printBoard(board):
+		print(board['top-L'] + '|' + board['top-M'] + '|' + board['top-R'])
+		print('-+-+-')
+		print(board['mid-L'] + '|' + board['mid-M'] + '|' + board['mid-R'])
+		print('-+-+-')
+		print(board['low-L'] + '|' + board['low-M'] + '|' + board['low-R'])
+	printBoard(theBoard)
+	
+When you run this program, printBoard() will print out a blank tic-tactoe board.  当你运行这个程序，printBoard（）将打印出棋盘如下。
+
+	| |
+	-+-+-
+	| |
+	-+-+-
+	| |
+	
+The printBoard() function can handle any tic-tac-toe data structure you pass it. Try changing the code to the following:  
+printBoard（）函数可以处理传递给它的任何井字棋的数据结构。试将代码改变为以下内容：
+
+	theBoard = {'top-L': 'O', 'top-M': 'O', 'top-R': 'O', 'mid-L': 'X', 'mid-M':
+	'X', 'mid-R': ' ', 'low-L': ' ', 'low-M': ' ', 'low-R': 'X'}
+
+	def printBoard(board):
+		print(board['top-L'] + '|' + board['top-M'] + '|' + board['top-R'])
+		print('-+-+-')
+		print(board['mid-L'] + '|' + board['mid-M'] + '|' + board['mid-R'])
+		print('-+-+-')
+		print(board['low-L'] + '|' + board['low-M'] + '|' + board['low-R'])
+	printBoard(theBoard)
+	
+Now when you run this program, the new board will be printed to the screen.    
+现在，当你运行这个程序，新的棋盘将被打印到屏幕上。
+
+	O|O|O
+	-+-+-
+	X|X|
+	-+-+-
+	| |X  
+	
+Because you created a data structure to represent a tic-tac-toe board and wrote code in printBoard() to interpret that data structure, you now have a program that “models” the tic-tac-toe board. You could have organized your data structure differently (for example, using keys like 'TOP-LEFT' instead of 'top-L'), but as long as the code works with your data structures, you will have a correctly working program.   
+因为你创建的数据结构来表示一个井字棋盘和printBoard代码来解释该数据结构，你现在有一个井字棋盘的“模板”程序.你可以以不同方式组织你的数据结构（例如，使用键值 'TOP-LEFT'代替 'top-L'），只要该代码可与您的数据结构匹配，你的程序就能正常运行。  
+
+For example, the printBoard() function expects the tic-tac-toe data structure to be a dictionary with keys for all nine slots. If the dictionary you passed was missing, say, the 'mid-L' key, your program would no longer work.  
+例如，printBoard（）函数需要井字棋数据结构是9个键值对的字典。假设字典少了'mid-L'键，你的程序将不再工作。
+
+	O|O|O
+	-+-+-
+	Traceback (most recent call last):
+	  File "ticTacToe.py", line 10, in <module>
+		printBoard(theBoard)
+	  File "ticTacToe.py", line 6, in printBoard
+		print(board['mid-L'] + '|' + board['mid-M'] + '|' + board['mid-R'])
+	KeyError: 'mid-L'
+
+Now let’s add code that allows the players to enter their moves. Modify the ticTacToe.py program to look like this:  
+现在，让我们添加代码，允许玩家进行旗子移动。像这样修改ticTacToe.py：
+
+theBoard = {'top-L': ' ', 'top-M': ' ', 'top-R': ' ', 'mid-L': ' ', 'mid-M': ' ', 'mid-R': ' ', 'low-L': ' ', 'low-M': ' ', 'low-R': ' '}
+
+
+	def printBoard(board):
+		print(board['top-L'] + '|' + board['top-M'] + '|' + board['top-R'])
+		print('-+-+-')
+		print(board['mid-L'] + '|' + board['mid-M'] + '|' + board['mid-R'])
+		print('-+-+-')
+		print(board['low-L'] + '|' + board['low-M'] + '|' + board['low-R'])
+	turn = 'X'
+	for i in range(9):
+		printBoard(theBoard)
+		print('Turn for ' + turn + '. Move on which space?')
+		move = input()
+		theBoard[move] = turn
+		if turn == 'X':
+			turn = 'O'
+		else:
+			turn = 'X'
+	printBoard(theBoard)
+	
+The new code prints out the board at the start of each new turn, gets the active player’s move, updates the game board accordingly and then swaps the active player before moving on to the next turn.
+When you run this program, it will look something like this:  
+新的代码在每一轮开始的时候打印出棋盘,并获取棋手的棋子动向,更新棋盘,并在下一轮棋手移动棋子前交换激活棋手.当你运行这个程序,你会看到类似这样的东西:
+
+	 | |
+	-+-+-
+	 | |
+	-+-+-
+	 | |
+	Turn for X. Move on which space?
+	mid-M
+	 | |
+	-+-+-
+	 |X|
+	-+-+-
+	 | |
+	Turn for O. Move on which space?
+	low-L
+	 | |
+	-+-+-
+	 |X|
+	-+-+-
+	O| |
+
+	--snip--
+
+	O|O|X
+	-+-+-
+	X|X|O
+	-+-+-
+	O| |X
+	Turn for X. Move on which space?
+	low-M
+	O|O|X
+	-+-+-
+	X|X|O
+	-+-+-
+	O|X|X
+	
+This isn’t a complete tic-tac-toe game—for instance, it doesn’t ever check whether a player has won—but it’s enough to see how data structures can be used in programs.  
+这不是一个完整的井字棋游戏.例如，它没有在任何时候检查玩家是否赢得了比赛的功能,但它足以展示数据结构在程序中如何使用。  
+
+If you are curious, the source code for a complete tic-tac-toe program is described in the resources available from http://nostarch.com/automatestuff/  
+如果你很好奇，一个完整的井字棋程序的源代码是怎样的可以从http://nostarch.com/automatestuff/  获取资源.
+
+##Nested Dictionaries and Lists
+##嵌套的字典和列表
+
+Modeling a tic-tac-toe board was fairly simple: The board needed only a single dictionary value with nine key-value pairs. As you model more complicated things, you may find you need dictionaries and lists that contain other dictionaries and lists. Lists are useful to contain an ordered series of values, and dictionaries are useful for associating keys with values. For example, here’s a program that uses a dictionary that contains other dictionaries in order to see who is bringing what to a picnic. The totalBrought() function can read this data structure and calculate the total number of an item being brought by all the guests.  
+建模井字棋盘是相当简单：该模型只需要九个键-值对的字典值.当你想建模更复杂的东西，你会发现你需要字典和列表中包含其他字典和列表.列表在包含有序值序列时非常有用，字典在键与值相关联时非常有用.例如,下面是一个使用包含其它有序字典,查看谁带来什么野餐的程序。totalBrought（）函数可以读取该数据结构并通过计算得到客人带某一个食物的总数.
+
+	allGuests = {'Alice': {'apples': 5, 'pretzels': 12},
+				 'Bob': {'ham sandwiches': 3, 'apples': 2},
+				 'Carol': {'cups': 3, 'apple pies': 1}}
+
+
+	def totalBrought(guests, item):
+		numBrought = 0
+		for k, v in guests.items():
+			numBrought = numBrought + v.get(item, 0)
+		return numBrought
+
+	print('Number of things being brought:')
+	print(' - Apples         ' + str(totalBrought(allGuests, 'apples')))
+	print(' - Cups           ' + str(totalBrought(allGuests, 'cups')))
+	print(' - Cakes          ' + str(totalBrought(allGuests, 'cakes')))
+	print(' - Ham Sandwiches ' + str(totalBrought(allGuests, 'ham sandwiches')))
+	print(' - Apple Pies     ' + str(totalBrought(allGuests, 'apple pies')))
+
+Inside the totalBrought() function, the for loop iterates over the key-value pairs in guests. Inside the loop, the string of the guest’s name is assigned to k, and the dictionary of picnic items they’re bringing is assigned to v. If the item parameter exists as a key in this dictionary, it’s value (the quantity) is added to numBrought. If it does not exist as a key, the get() method returns 0 to be added to numBrought.
+The output of this program looks like this:    
+在totalBrought()中,采用了键值对来循环迭代.在循环中，客人名称的字符串被分配到K，他们带来的野餐字符串被分配到v,如果该项目参数存在如本字典的键，它的值（数量）加入到numBrought中.如果它不存在，则get（）方法返回0被添加到numBrought。整个程序运行输出如下:
+
+	Number of things being brought:
+	- Apples 7
+	- Cups 3
+	- Cakes 0
+	- Ham Sandwiches 3
+	- Apple Pies     1
+
+This may seem like such a simple thing to model that you wouldn’t need to bother with writing a program to do it. But realize that this same totalBrought() function could easily handle a dictionary that contains thousands of guests, each bringing thousands of different picnic items. Then having this information in a data structure along with the totalBrought() function would save you a lot of time!  
+这似乎是这样一个简单事情的模型，你不会需要编写一个程序来做到这一点.但是，认识到totalBrought()函数通过字典，可以很容易地处理包含成千上万的客人，每人带来数千种不同野餐项目。当遇到具有类似数据结构信息的事务需要处理时totalBrought()函数会为您节省大量的时间！  
+
+You can model things with data structures in whatever way you like, as long as the rest of the code in your program can work with the data model correctly. When you first begin programming, don’t worry so much about the “right” way to model data. As you gain more experience, you may come up with more efficient models, but the important thing is that the data model works for your program’s needs.  
+你可以以你喜欢的方式对任何数据结构建模,只要在你的程序中用数据模型可以正常工作。当你第一次开始编程，不用太在乎是否使用了“正确”的数据模型.当你获得更多的经验，你就能实现更多有效的模型，但重要的是，数据模型适用于你的程序的需求。  
+
+##Summary 总结
+
+You learned all about dictionaries in this chapter. Lists and dictionaries are values that can contain multiple values, including other lists and dictionaries. Dictionaries are useful because you can map one item (the key) to another (the value), as opposed to lists, which simply contain a series of values in order. Values inside a dictionary are accessed using square brackets just as with lists. Instead of an integer index, dictionaries can have keys of a variety of data types: integers, floats, strings, or tuples. By organizing a program’s values into data structures, you can create representations of real-world objects. You saw an example of this with a tic-tac-toe board.  
+你在本章学习了字典。列表和字典可以包含多个值，也可以包括其他列表和字典值。字典可以映射一个键到另一个值，相对于列表，它只是简单地包含一系列值的顺序。字典里面的值像列表一样可以用方括号访问.和列表的整数索引不同，字典可以有多种数据类型的键：整数，浮点数，字符串或元组。通过程序的将值转换为数据结构，您可以创建现实世界对象的模型。就像井字棋盘例子一样。
