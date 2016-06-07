@@ -518,3 +518,83 @@ You can model things with data structures in whatever way you like, as long as t
 
 You learned all about dictionaries in this chapter. Lists and dictionaries are values that can contain multiple values, including other lists and dictionaries. Dictionaries are useful because you can map one item (the key) to another (the value), as opposed to lists, which simply contain a series of values in order. Values inside a dictionary are accessed using square brackets just as with lists. Instead of an integer index, dictionaries can have keys of a variety of data types: integers, floats, strings, or tuples. By organizing a program’s values into data structures, you can create representations of real-world objects. You saw an example of this with a tic-tac-toe board.  
 你在本章学习了字典。列表和字典可以包含多个值，也可以包括其他列表和字典值。字典可以映射一个键到另一个值，相对于列表，它只是简单地包含一系列值的顺序。字典里面的值像列表一样可以用方括号访问.和列表的整数索引不同，字典可以有多种数据类型的键：整数，浮点数，字符串或元组。通过程序的将值转换为数据结构，您可以创建现实世界对象的模型。就像井字棋盘例子一样。
+
+##Practice Questions练习题
+
+Q:1. What does the code for an empty dictionary look like?
+Q:2. What does a dictionary value with a key 'foo' and a value 42 look like?
+Q:3. What is the main difference between a dictionary and a list?
+Q:4. What happens if you try to access spam['foo'] if spam is {'bar': 100}?
+Q:5. If a dictionary is stored in spam, what is the difference between the expressions 'cat' in spam and 'cat' in spam.keys()?
+Q:6. If a dictionary is stored in spam, what is the difference between the expressions 'cat' in spam and 'cat' in spam.values()?
+Q:7. What is a shortcut for the following code?
+
+if 'color' not in spam:
+    spam['color'] = 'black'
+Q:8. What module and function can be used to “pretty print” dictionary values?  
+
+Practice Projects
+For practice, write programs to do the following tasks.  
+编写程序来执行以下任务  
+
+Fantasy Game Inventory  
+幻想游戏
+
+You are creating a fantasy video game. The data structure to model the player’s inventory will be a dictionary where the keys are string values describing the item in the inventory and the value is an integer value detailing how many of that item the player has. For example, the dictionary value {'rope': 1, 'torch': 6, 'gold coin': 42, 'dagger': 1, 'arrow': 12} means the player has 1 rope, 6 torches, 42 gold coins, and so on.   
+您正在创建一个幻想视频游戏。玩家背包的数据结构是一本字典，其键是各装备名称字符串，其值是一个整数代表玩家拥有某种装备多少件。例如:一个值如下的字典:{'rope': 1, 'torch': 6, 'gold coin': 42, 'dagger': 1, 'arrow': 12}表示该玩家拥有绳1根，火把6只，金币42个,匕首1把，箭头12只
+
+Write a function named displayInventory() that would take any possible “inventory” and display it like the following:  
+编写一个名为displayInventory（）的函数，包含任何可能的装备并且按照以下方式显示出来:
+
+	Inventory:
+	12 arrow
+	42 gold coin
+	1 rope
+	6 torch
+	1 dagger
+	Total number of items: 62
+	
+Hint: You can use a for loop to loop through all the keys in a dictionary.  
+提示：您可以通过for循环遍历字典中的所有键。
+
+	# inventory.py
+	stuff = {'rope': 1, 'torch': 6, 'gold coin': 42, 'dagger': 1, 'arrow': 12}
+
+	def displayInventory(inventory):
+		print("Inventory:")
+		item_total = 0
+		for k, v in inventory.items():
+			# FILL IN THE CODE HERE
+		print("Total number of items: " + str(item_total))
+
+	displayInventory(stuff)
+	
+List to Dictionary Function for Fantasy Game Inventory
+列表转成字典函数幻想游戏
+
+Imagine that a vanquished dragon’s loot is represented as a list of strings like this:  
+假设，杀死一条龙的战利品表示为这样的字符串列表：
+
+	dragonLoot = ['gold coin', 'dagger', 'gold coin', 'gold coin', 'ruby']
+
+Write a function named addToInventory(inventory, addedItems), where the inventory parameter is a dictionary representing the player’s inventory (like in the previous project) and the addedItems parameter is a list like dragonLoot. The addToInventory() function should return a dictionary that represents the updated inventory. Note that the addedItems list can contain multiples of the same item. Your code could look something like this:  
+编写一个函数addToInventory(inventory, addedItems)添加战利品到玩家背包.addedItems参数是dragonLoot爆出物品列表。函数的返回是更新玩家背包.注意，addedItems列表可包含相同项目。您的代码可以是这个样子：
+
+	def addToInventory(inventory, addedItems):
+		# your code goes here
+
+	inv = {'gold coin': 42, 'rope': 1}
+	dragonLoot = ['gold coin', 'dagger', 'gold coin', 'gold coin', 'ruby']
+	inv = addToInventory(inv, dragonLoot)
+	displayInventory(inv)
+
+The previous program (with your displayInventory() function from the previous project) would output the following:  
+用前面编写的displayInventory（）函数将输出以下内容：  
+
+	Inventory:
+	45 gold coin
+	1 rope
+	1 ruby
+	1 dagger
+
+	Total number of items: 48
