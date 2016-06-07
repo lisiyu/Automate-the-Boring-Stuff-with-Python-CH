@@ -13,7 +13,7 @@
 - [x] Chapter 3 – Functions
 - [x] Chapter 4 – Lists
 - [X] Chapter 5 – Dictionaries and Structuring Data
-- [ ] Chapter 6 – Manipulating Strings
+- [X] Chapter 6 – Manipulating Strings
 - [ ] Chapter 7 – Pattern Matching with Regular Expressions
 - [ ] Chapter 8 – Reading and Writing Files
 - [ ] Chapter 9 – Organizing Files
